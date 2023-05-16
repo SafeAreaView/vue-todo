@@ -1,33 +1,3 @@
-<script>
-export default {
-  name: "TodoList",
-  data() {
-    return {
-      newTodo: "",
-      idForToodo: 5,
-      todos: [
-        {
-          id: 1,
-          title: "First todo",
-          Completed: false,
-        },
-      ],
-    };
-  },
-  methods: {
-    addTodo() {
-      this.todos.push({
-        id: this.idForToodo,
-        title: this.newTodo,
-        completed: false,
-      });
-      this.newTodo = "";
-      this.idForToodo++;
-    },
-  },
-};
-</script>
-
 <template>
   <div class="todo-wrapper">
     <h1 class="title">ToDo List</h1>
@@ -40,19 +10,80 @@ export default {
           v-model="newTodo"
           @keyup.enter="addTodo"
         />
-        <button class="todo-add__btn">Add</button>
+        <button class="todo-add__btn" @click="addTodo">Add</button>
       </div>
     </div>
     <div class="todo-wrapper">
-      <div v-for="todo in todos" :key="todo.id" class="todo-item">
-        <input class="item-checkbox" type="checkbox" id="checkbox" />
-        <span class="item-text">{{ todo.title }}</span>
-        <button class="item-edit"></button>
-        <button class="item-delete"></button>
+      <div
+        v-for="todo in todos"
+        :key="todo.id"
+        class="todo-item"
+        @click="toggleCompleted(todo)"
+      >
+        <input
+          class="item-checkbox"
+          type="checkbox"
+          :id="'checkbox-' + todo.id"
+          :checked="todo.completed"
+        />
+        <span v-if="!todo.editing" class="item-text">{{ todo.title }}</span>
+        <input
+          v-else
+          class="item-edit-input"
+          type="text"
+          v-model="todo.title"
+          @keyup.enter="saveTodo(todo)"
+        />
+        <button class="item-edit" @click="toggleEdit(todo)"></button>
+        <button class="item-delete" @click="deleteTodo(todo.id)"></button>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "TodoList",
+  data() {
+    return {
+      newTodo: "",
+      idForTodo: 5,
+      todos: [
+        {
+          id: 1,
+          title: "First todo",
+          completed: false,
+          editing: false,
+        },
+      ],
+    };
+  },
+  methods: {
+    addTodo() {
+      this.todos.push({
+        id: this.idForTodo,
+        title: this.newTodo,
+        completed: false,
+        editing: false,
+      });
+      this.newTodo = "";
+      this.idForTodo++;
+    },
+    deleteTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
+    },
+    toggleEdit(todo) {
+      todo.editing = !todo.editing;
+    },
+    saveTodo(todo) {
+      todo.editing = false;
+    },
+    toggleCompleted(todo) {
+      todo.completed = !todo.completed;
+    },
+  },
+};
+</script>
 
 <style scoped>
 .todo-wrapper {
@@ -89,8 +120,14 @@ export default {
 
   font-family: Roboto;
   font-size: 20px;
+
   background-color: rgb(43, 122, 122);
   color: white;
+
+  transition: 0.3s;
+}
+.todo-add__btn:hover {
+  background-color: rgb(49, 202, 202);
 }
 .todo-item {
   width: inherit;
