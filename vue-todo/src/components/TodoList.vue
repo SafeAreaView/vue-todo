@@ -44,7 +44,7 @@ export default {
       idForTodo: 1,
       todos: [
         {
-          id: 1,
+          id: 0,
           title: "First todo",
           completed: false,
           editing: false,
