@@ -14,26 +14,20 @@
       </div>
     </div>
     <div class="todo-wrapper">
-      <div
-        v-for="todo in todos"
-        :key="todo.id"
-        class="todo-item"
-        @click="toggleCompleted(todo)"
-      >
+      <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
         <input
           class="item-checkbox"
           type="checkbox"
           :id="'checkbox-' + todo.id"
           :checked="todo.completed"
         />
-        <span v-if="!todo.editing" class="item-text">{{ todo.title }}</span>
-        <input
-          v-else
-          class="item-edit-input"
-          type="text"
-          v-model="todo.title"
-          @keyup.enter="saveTodo(todo)"
-        />
+        <span v-if="!todo.editing" class="item-text"
+          >{{ index + 1 }}. {{ todo.title }}</span
+        >
+        <form v-else class="item-edit-form" @submit.prevent="saveTodo(todo)">
+          <input class="item-edit-input" type="text" v-model="todo.title" />
+          <button type="submit" class="item-edit-submit">Save</button>
+        </form>
         <button class="item-edit" @click="toggleEdit(todo)"></button>
         <button class="item-delete" @click="deleteTodo(todo.id)"></button>
       </div>
@@ -47,7 +41,7 @@ export default {
   data() {
     return {
       newTodo: "",
-      idForTodo: 5,
+      idForTodo: 1,
       todos: [
         {
           id: 1,
@@ -67,7 +61,7 @@ export default {
         editing: false,
       });
       this.newTodo = "";
-      this.idForTodo++;
+      this.idForTodo++; // Увеличиваем значение idForTodo
     },
     deleteTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
