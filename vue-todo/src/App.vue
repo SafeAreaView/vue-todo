@@ -1,5 +1,6 @@
 <script setup>
-import Item from "./components/Item.vue";
+import Item from "@/components/Item.vue";
+import Add from "@/components/Add.vue";
 </script>
 
 <template>
@@ -8,9 +9,11 @@ import Item from "./components/Item.vue";
       <h1 class="header-title">ToDo List</h1>
     </div>
   </header>
-  <div class="wrapper">
+  <div class="todo-wrapper">
     <h1 class="title">ToDo List</h1>
-    <div class="add-task"></div>
+    <div class="add-task">
+      <Add />
+    </div>
     <div class="todo-wrapper">
       <Item />
       <Item />

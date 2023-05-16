@@ -28,9 +28,10 @@
 }
 
 .title {
-  margin: 0;
+  margin-top: 120px;
+
   font-family: Roboto;
-  font-size: 45px;
+  font-size: 40px;
   color: rgb(0, 0, 0);
 }
 
@@ -46,19 +47,11 @@
 
 .todo-wrapper {
   width: 1200px;
-
   margin: 0 auto;
+
 
   display: flex;
   flex-direction: column;
   gap: 15px;
-  justify-content: center;
-  align-items: center;
 
-}
-
-.todo-title {
-  font-family: Roboto;
-  font-style: 40px;
-  font-weight: normal;
 }
