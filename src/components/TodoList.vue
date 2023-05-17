@@ -13,36 +13,29 @@
         <button class="todo-add__btn" @click="addTodo">Add</button>
       </div>
     </div>
-    <div class="todo-wrapper">
-      <div
+    <div class="todo-items">
+      <TodoItem
         v-for="(todo, index) in todos"
         :key="todo.id"
-        class="todo-item"
-        @click="toggleCompleted(todo)"
-      >
-        <input
-          class="item-checkbox"
-          type="checkbox"
-          :id="'checkbox-' + todo.id"
-          :checked="todo.completed"
-        />
-        <span v-if="!todo.editing" class="item-text"
-          >{{ index + 1 }}. {{ todo.title }}</span
-        >
-        <form v-else class="item-edit-form" @submit.prevent="saveTodo(todo)">
-          <input class="item-edit-input" type="text" v-model="todo.title" />
-          <button type="submit" class="item-edit-submit">Save</button>
-        </form>
-        <button class="item-edit" @click="toggleEdit(todo)"></button>
-        <button class="item-delete" @click="deleteTodo(todo.id)"></button>
-      </div>
+        :todo="todo"
+        :index="index"
+        @toggleCompleted="toggleCompleted(todo)"
+        @toggleEdit="toggleEdit(todo)"
+        @deleteTodo="deleteTodo(todo.id)"
+        @saveTodo="saveTodo"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import TodoItem from "@/components/TodoItem.vue";
+
 export default {
   name: "TodoList",
+  components: {
+    TodoItem,
+  },
   data() {
     return {
       newTodo: "",
@@ -66,7 +59,7 @@ export default {
         editing: false,
       });
       this.newTodo = "";
-      this.idForTodo++; // Увеличиваем значение idForTodo
+      this.idForTodo++;
     },
     deleteTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
@@ -74,11 +67,13 @@ export default {
     toggleEdit(todo) {
       todo.editing = !todo.editing;
     },
-    saveTodo(todo) {
-      todo.editing = false;
-    },
     toggleCompleted(todo) {
       todo.completed = !todo.completed;
+    },
+    saveTodo() {
+      this.todos.forEach((todo) => {
+        todo.editing = false;
+      });
     },
   },
 };
@@ -128,50 +123,9 @@ export default {
 .todo-add__btn:hover {
   background-color: rgb(49, 202, 202);
 }
-.todo-item {
-  width: inherit;
-  height: 100px;
-
-  padding: 0px 20px;
-
+.todo-items {
   display: flex;
-  gap: 32px;
-  align-items: center;
-
-  border: 1px solid black;
-}
-
-.item-delete {
-  width: 32px;
-  height: 32px;
-  border: none;
-
-  background: url("/public/images/delete-icon.png") 0 0 / cover no-repeat;
-}
-
-.item-edit {
-  width: 32px;
-  height: 32px;
-  border: none;
-
-  background: url("/public/images/edit-icon.png") 0 0 / cover no-repeat;
-}
-
-.item-checkbox {
-  width: 32px;
-  height: 32px;
-}
-
-.item-label {
-  width: 1000px;
-
-  display: flex;
-  gap: 30px;
-}
-
-.item-text {
-  width: 900px;
-  font-family: Roboto;
-  font-size: 30px;
+  flex-direction: column;
+  gap: 15px;
 }
 </style>
