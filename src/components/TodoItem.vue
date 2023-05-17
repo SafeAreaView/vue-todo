@@ -1,5 +1,5 @@
 <template>
-  <div class="todo-item bg-black" @click="$emit('toggleCompleted')">
+  <div class="todo-item" @click="$emit('toggleCompleted')">
     <input
       class="item-checkbox"
       type="checkbox"
