@@ -14,7 +14,12 @@
       </div>
     </div>
     <div class="todo-wrapper">
-      <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
+      <div
+        v-for="(todo, index) in todos"
+        :key="todo.id"
+        class="todo-item"
+        @click="toggleCompleted(todo)"
+      >
         <input
           class="item-checkbox"
           type="checkbox"
